@@ -2,16 +2,9 @@ module RubyStackoverflow
   class Client
     class Resource
       def initialize(attributes_hash)
-        attributes_hash.each do|k,v|
+        attributes_hash.each do|k, v|
           self.class.send :attr_accessor, k
-          var = "@#{k}"
-          case k.to_sym
-          when :creation_date, :last_activity_date, :launch_date,:last_edit_date
-            value = Time.at(v).utc.to_s
-          else
-            value = v
-          end
-          instance_variable_set(var, value)
+          instance_variable_set("@#{k}", v)
         end
       end
 
