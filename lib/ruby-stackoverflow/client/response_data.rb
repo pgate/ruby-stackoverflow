@@ -4,7 +4,9 @@ module RubyStackoverflow
       attr_reader :data, :has_more, :error, :raw_response, :raw_data, :quota_max, :quota_remaining, :backoff
 
       def initialize(response, klass)
-        @raw_response = response
+        # Hacky deep_clone!
+        @raw_response = Marshal.load(Marshal.dump(response))
+
         if response[:items].nil?
           @error = StackoverflowError.new(response)
         else
