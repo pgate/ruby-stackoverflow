@@ -47,7 +47,7 @@ module RubyStackoverflow
 
     def request(method, url, klass, options={})
       url = append_params_to_url(url, parse_options(options))
-      response = HTTParty.send(method,url)
+      response = HTTParty.send(method, url, proxy_params)
       parse_response(response, klass)
     end
 
@@ -67,8 +67,13 @@ module RubyStackoverflow
       {key: configuration.client_key, site: 'stackoverflow', access_token: configuration.access_token}
     end
 
+    def proxy_params
+      @proxy_params ||= {http_proxyaddr: configuration.proxy_addr, http_proxyport: configuration.proxy_port,
+                         http_proxyuser: configuration.proxy_user, http_proxypass: configuration.proxy_pass}
+    end
+
     def configuration
-      @configuration||= Configuration.new
+      @configuration ||= Configuration.new
     end
   end
 end
